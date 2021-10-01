@@ -6,24 +6,12 @@ public class GitTest{
     int num = 0;
     int[] arr = new int[(i-50)/5+1];
 
-    while(i>=50){
-
-        arr[num] = i;
-        i = i - 5;
-        num++; 
-
-    }
 
     for(int j = 0; j<arr.length ;j++){
         System.out.println(arr[j]);
     }
     
-    
-    
-    
-    
-    
-    
+    //fuck you
     
     
     }
