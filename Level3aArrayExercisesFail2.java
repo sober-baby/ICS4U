@@ -7,12 +7,13 @@ public class Level3aArrayExercisesFail2 {
         Scanner ss = new Scanner(System.in);
         int counter = 0;
         int userInput;
-        boolean trueFalse = true;
+        
 
         do {
 
             System.out.println("Enter a unique integer");
             userInput = ss.nextInt();
+            boolean trueFalse = true;
 
             for (int i = 0; i < counter; i++) {
 
