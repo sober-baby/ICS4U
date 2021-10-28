@@ -29,7 +29,7 @@ public class HundredButtons extends JFrame implements ActionListener{
         } 
 
         add(pan1);
-        add(pan2);
+        //add(pan2);
         setLayout(layout1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
