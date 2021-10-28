@@ -16,15 +16,15 @@ public class MoreRecursion {
     
     }
 
-    public static int addUp(int[] arr, int sum){
+    public static int addUp(int[] arr, int sum, int count){
 
-        if(arr.length == 0){
+        if((arr.length - count) < 0){
 
-            return arr.length;
+            return sum;
 
         }else{
 
-            return addUp(arr.length - 1, sum += arr[arr.length - 1]);
+            return addUp(arr, sum += arr[arr.length - 1 - count], count++);
 
         }
     
@@ -48,8 +48,11 @@ public class MoreRecursion {
     public static void main (String args[]){
 
         String blank = "";
-
-        System.out.println(laugh(4, blank));
+        int[] arr = {3,4,5};
+        int sum = 0;
+        int count = 0;
+        System.out.println(addUp(arr, sum, count));
+       // System.out.println(laugh(4, blank));
         
 
     }
