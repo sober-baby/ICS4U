@@ -12,11 +12,17 @@ public class ArrayListExercises {
             System.out.println("Do you want to keep on entering a number? Y/N");
             String check = ss.next();
             if(check.equalsIgnoreCase("N")){
-
+                
                 break;
 
             }
         }
+    }
+
+    public static void countWhole(ArrayList<Integer> arr){
+
+
+        
     }
 
     public static void main (String args[]){
