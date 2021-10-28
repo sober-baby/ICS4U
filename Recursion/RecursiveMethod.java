@@ -1,3 +1,4 @@
+package Recursion;
 public class RecursiveMethod {
 
     public static int factorial (int number){
