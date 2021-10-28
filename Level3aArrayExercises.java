@@ -2,10 +2,9 @@ import java.util.*;
 
 public class Level3aArrayExercises {
 
-    public static void noDuplicates() {
+    public static void noDuplicates(int[] arr) {
 
         Scanner ss = new Scanner(System.in);
-        int[] arr = new int[7];
         int counter = 0;
         int userInput;
         boolean trueFalse = true;
@@ -17,34 +16,33 @@ public class Level3aArrayExercises {
 
             for (int i = 0; i < counter; i++) {
 
-                if(trueFalse){
+                if (userInput == arr[i]) {
 
-                    if (userInput == arr[i]) {
-
-                        System.out.println("ERROR. Enter a valid number");
-                        userInput = ss.nextInt();
-                        trueFalse = true;
-
-                    }else{
-
-                        trueFalse = false; 
-                    }
-                }
-
+                    System.out.println("ERROR. Plz re-enter");
+                    trueFalse = false;
 
                 }
+            }
+            if (trueFalse) {
 
-                    arr[counter] = userInput;
-                    counter++;
-                    trueFalse = true;
-            
+                arr[counter] = userInput;
+                counter++;
+                trueFalse = true;
+
+            }
         } while (counter < arr.length);
 
     }
 
     public static void main(String args[]) {
 
-        noDuplicates();
+        int[] arr = new int[7];
+        noDuplicates(arr);
+        for (int i = 0; i < 7; i++) {
+
+            System.out.println(arr[i]);
+
+        }
 
     }
 
