@@ -51,21 +51,34 @@ public class Level4a2DArrayExersices {
 
         int[] rowSum = new int[3];
         int[] columnSum = new int[4];
+    
         for(int r = 0; r<arr.length; r++){
-            
+
             for(int c = 0; c<arr[r].length; c++){
 
                 System.out.print(arr[r][c] + " ");
                 rowSum[r] += arr[r][c];
-            
 
-            }
+            } 
 
-            columnSum[c] += arr[r][c];       
             System.out.print("Sum: " + rowSum[r]);
             System.out.println();
+            
         }
+        
+        int count = 0; 
+
+        while(count < 4){
+
+            for(int i = 0; i<arr.length; i++){
+
+                columnSum[count] += arr[i][count];
     
+            }
+            System.out.print(columnSum[count] + " ");
+            count++;
+        }
+        
     }
 
     public static void main(String args[]) throws Exception{

@@ -34,13 +34,11 @@ public class RecursiveMethod {
             
             if(power > 0){
 
-             return base*findPower(base, power-1); 
-
+             return base*findPower(base, power-1);
+             
             }else{
 
-             
-             return 1 /base * findPower(base, power+1);
-             
+             return base*findPower(base, power+1);
 
             }
         }
@@ -55,32 +53,44 @@ public class RecursiveMethod {
         }
     }
 
-    /*public static int fibonaciSequence(int n) {     //method to calculate the value of a fibonaciSequence at a given term 
-
-        if(n == 1 || n == 2){
-
-            return 0;
+    //method to calculate the value of a fibonaciSequence at a given term 
+    public static int fibonaciSequence(int n) {
         
-        }else{
-            startNum += startNum;
-            fibonaciSequence(term - 1);
-            startNum ++; 
-            return startNum;  
-        }
-         
+        if(n > 0 && n<3){
 
-    }*/
+            return 1;
+            
+        }else{
+
+            return fibonaciSequence(n-1) + fibonaciSequence(n-2); 
+
+
+        }
+
+    }
+
+    public static int fibonacci(int n)  {
+        if(n == 0)
+            return 0;
+        else if(n == 1)
+          return 1;
+       else
+          return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+
+
 
 
         
 
 
     public static void main(String args[]){
-        //System.out.println(factorial(15));
-        //recursion(1234);
-        //System.out.println();
-        //System.out.println(findGCD(111, 2101));
+        System.out.println(factorial(15));
+        recursion(1234);
+        System.out.println();
+        System.out.println(findGCD(111, 2101));
         System.out.println(findPower(5,-5));
+        System.out.println(fibonaciSequence(6));
     }
     
 }

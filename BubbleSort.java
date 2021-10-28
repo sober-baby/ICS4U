@@ -1,7 +1,7 @@
 import java.util.*;
 public class BubbleSort {
     public static void main(String args[]){
-        String presenters[] = {"Jathan", "Levin", "Kevin", "Aiden","James"};
+        String presenters[] = {"James", "Levin", "Kevin", "Aiden","James"};
 
 
 

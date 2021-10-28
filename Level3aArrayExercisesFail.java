@@ -5,28 +5,25 @@ public class Level3aArrayExercisesFail {
 
         Scanner ss = new Scanner(System.in);
         int[] arr = new int[7];
-        boolean tF = true;
+        boolean tF = true; 
         
         for(int i = 0; i<arr.length; i++){
 
             System.out.println("Enter 7 integers");
             arr[i] = ss.nextInt();
+            
+            while(tF){
 
-
-                for(int j = 0; j<i; j++){
-                    
-                    while(tF){
+                for(int j = 0; i<i+1; j++){
 
                     if(arr[i] == arr[j]){
 
                         System.out.println("ERROR. Enter a unique integer");
                         arr[i] = ss.nextInt();
-
                 
                     }else{
 
-                        tF = false;
-
+                        tF = false; 
                     }
                 }                 
         }
@@ -36,7 +33,6 @@ public class Level3aArrayExercisesFail {
     public static void main(String args[]){
 
         noDuplicates();
-        
 
 
     }
