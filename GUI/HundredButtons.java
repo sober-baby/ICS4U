@@ -16,6 +16,7 @@ public class HundredButtons extends JFrame implements ActionListener{
         JPanel pan2 = new JPanel();
 
         pan1.setLayout(layout1);
+        // panl.setPreferredSize(new Dimension(640, 480));
 
         for(int r = 0; r<button.length; r++){
 
@@ -28,9 +29,10 @@ public class HundredButtons extends JFrame implements ActionListener{
             }
         } 
 
+        
         add(pan1);
         //add(pan2);
-        setLayout(new FlowLayout());
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
