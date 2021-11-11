@@ -29,7 +29,7 @@ public class HundredButtons extends JFrame implements ActionListener{
             }
         } 
 
-        
+            
         add(pan1);
         //add(pan2);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
