@@ -2,20 +2,22 @@ package Recursion;
 
 public class MoreRecursion {
 
-    public static String laugh(int num, String currentWord){
+    public static String laugh(int num){
 
         if(num == 0){
 
-            return currentWord;
+            return "";
 
         }else{
 
-            return laugh(num - 1, currentWord += "HA ");
+            return laugh(num - 1) + "Ha ";
 
         }
     
     }
 
+    // add up all values in an array using recursion 
+    
     public static int addUp(int[] arr, int count){
 
         if(count == arr.length - 1){
@@ -52,7 +54,7 @@ public class MoreRecursion {
         int sum = 0;
         int count = 0;
         System.out.println(addUp(arr, count));
-       System.out.println(laugh(400, blank));
+       System.out.println(laugh(4));
         
 
     }

@@ -39,7 +39,7 @@ public class RecursiveMethod {
              
             }else{
 
-             return base*findPower(base, power+1);
+             return 1/base*findPower(base, power+1);
 
             }
         }
@@ -48,8 +48,9 @@ public class RecursiveMethod {
     public static void recursion(int number) { //method to print the same number again backwards with recursion
         if(number > 0) {
            
-            System.out.print((number%10));
+            
             recursion(number/10);
+            System.out.print(number%10);
                   
         }
     }
@@ -81,11 +82,11 @@ public class RecursiveMethod {
 
 
     public static void main(String args[]){
-        System.out.println(factorial(15));
+        System.out.println(factorial(50));
         recursion(1234);
         System.out.println();
         System.out.println(findGCD(111, 2101));
-        System.out.println(findPower(5,-5));
+        System.out.println(findPower(2,-2));
         System.out.println(fibonaciSequence(6));
     }
     
