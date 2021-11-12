@@ -13,7 +13,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static Font fontbig = new Font("SansSerif", Font.BOLD, 30);
     public static Font fontmedium = new Font("SansSerif", Font.BOLD, 20);
     public static Font fontsmall = new Font("SansSerif", Font.BOLD, 15);
-    public static char b, o, m, e;
+    public static char b, o, m, exit;
     public static int row, coloumn;
     public static boolean validInput = false;
     public static Color brown = new Color(218, 165, 32);
@@ -31,7 +31,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static JLabel[][] mapLable = new JLabel[row][coloumn];
     public static JLabel descriptionLabel1, descriptionLabel2, chooseRowLabel, chooseColoumnJLabel, emptyLabel,
             noteLabel;
-    public static JButton chooseFile, chooseRandom, submitDimention, findPath, homeButton, reenterButton;
+    public static JButton chooseFile, proceed, chooseRandom, submitDimention, findPath, homeButton, reenterButton;
     public static JTextField enterRow, enterColoumn, enterFileName;
     String getText;
 
@@ -55,7 +55,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
         b = fs.next().charAt(0); // record the border character
         o = fs.next().charAt(0); // record the border character
         m = fs.next().charAt(0); // record the border character
-        e = fs.next().charAt(0); // record the border character
+        exit = fs.next().charAt(0); // record the border character
         fs.close(); // close the file scanner
 		for (int r = 0; r < row; r++) { // go through all labels and assign them a color
             String line = fs.nextLine();
@@ -256,14 +256,20 @@ public class MazeProgramming extends JFrame implements ActionListener {
         bottomRandomPanel.add(homeButton);
         bottomRandomPanel.add(reenterButton);
         bottomRandomPanel.setLayout(new GridLayout(1,2));
-        bottomRandomPanel.setMaximumSize(new Dimension(20000,20000));;
+        bottomRandomPanel.setMaximumSize(new Dimension(20000,20000));
 
         //If the user chooses to load data from a file
           
-        enterFileName = new JTextField("Enter a file name", 20);
-        fileMazePanel.add(enterFileName); 
-        getText = enterFileName.getText();
+        enterFileName = new JTextField("Enter a file name", 20); 
         enterFileName.setFont(fontmedium);
+        proceed = new JButton("Re_Enter Button");
+        proceed.addActionListener(this);
+        proceed.setFont(fontmedium);
+        fileMazePanel.add(enterFileName);
+        fileMazePanel.add(proceed);
+        fileMazePanel.setLayout(new GridLayout(1,2));
+        fileMazePanel.setMaximumSize(new Dimension(20000,20000));
+        
 
         // generate tiles as lables for the maze
 
@@ -328,6 +334,27 @@ public class MazeProgramming extends JFrame implements ActionListener {
         if (command.equals("Proceed")) {
 
 
+            
+            String fileName = enterFileName.getText();
+            File file = new File(fileName);
+            
+            if(file.isFile()){
+
+                try {
+                    getMapFromFile();
+                    colorMaze(row, coloumn, b, o, m, exit);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                
+
+
+            }else{
+                    
+                    MazeProgramming.infoBox("Enter a valid file name", "ERROR");
+    
+            }
 
         }
 
