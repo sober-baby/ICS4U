@@ -13,6 +13,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static Font fontbig = new Font("SansSerif", Font.BOLD, 30);
     public static Font fontmedium = new Font("SansSerif", Font.BOLD, 20);
     public static Font fontsmall = new Font("SansSerif", Font.BOLD, 15);
+    public static char b, o, m, e;
     public static int row, coloumn;
     public static boolean validInput = false;
     public static Color brown = new Color(218, 165, 32);
@@ -41,8 +42,32 @@ public class MazeProgramming extends JFrame implements ActionListener {
 
     }
 
+    // method for prompting user for the file name, reading information from the file, and declaring labels accordingly
+
+    public static void getMapFromFile() throws IOException {
+		Scanner ss = new Scanner(System.in); 
+		System.out.println("Enter the file name: xxx.txt ");
+		String fileName = ss.nextLine(); // take in the file name
+		File file = new File(fileName);
+		Scanner fs = new Scanner(file); // declare a second scanner for scanning through the file
+		int row = fs.nextInt(); // record the number of rows 
+		int column = fs.nextInt(); // record the number of columns
+        b = fs.next().charAt(0); // record the border character
+        o = fs.next().charAt(0); // record the border character
+        m = fs.next().charAt(0); // record the border character
+        e = fs.next().charAt(0); // record the border character
+        fs.close(); // close the file scanner
+		for (int r = 0; r < row; r++) { // go through all labels and assign them a color
+            String line = fs.nextLine();
+			for (int c = 0; c < column; c++) {
+				pathChar[r][c] = line.charAt(c); // record the character in the file
+			}
+		}
+	}
+
+
     // function to color the specified maze
-    public static void colorMaze(int row, int coloumn, char open, char block, char mouse, char exit) {
+    public static void colorMaze(int row, int coloumn, char block, char open, char mouse, char exit) {
 
         for (int r = 0; r < mapLable.length; r++) {
 
@@ -176,7 +201,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public MazeProgramming() {
 
         setTitle("Maze Asignment");
-        setSize(1100, 1000);
+        setSize(1920, 1080);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         GridLayout layout1 = new GridLayout(row + 1, coloumn);
         BoxLayout layout2 = new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS);
@@ -231,17 +256,14 @@ public class MazeProgramming extends JFrame implements ActionListener {
         bottomRandomPanel.add(homeButton);
         bottomRandomPanel.add(reenterButton);
         bottomRandomPanel.setLayout(new GridLayout(1,2));
-        bottomRandomPanel.setMaximumSize(new Dimension(2000,2000));;
+        bottomRandomPanel.setMaximumSize(new Dimension(20000,20000));;
 
-        /*
-         * If the user chooses to load data from a file
-         * 
-         * enterFileName = new JTextField("Enter a file name", 20);
-         * fileMazePanel.add(enterFileName); getText = enterFileName.getText();
-         * 
-         */
-
-        // If the user chooses to auto generate a map
+        //If the user chooses to load data from a file
+          
+        enterFileName = new JTextField("Enter a file name", 20);
+        fileMazePanel.add(enterFileName); 
+        getText = enterFileName.getText();
+        enterFileName.setFont(fontmedium);
 
         // generate tiles as lables for the maze
 
@@ -276,29 +298,48 @@ public class MazeProgramming extends JFrame implements ActionListener {
 
         }
 
+        if(command.equals("Press to Enter From file")){
+
+
+            fileMazePanel.setVisible(true);
+            choosePanel.setVisible(false);
+            emptyPanel.setVisible(true);
+
+        }
+
         if (command.equals("Enter")) {
 
             enterValidNumber();
 
             if (validInput == true) {
+               
                 mapLable = new JLabel[row][coloumn];
                 pathChar = new char[row][coloumn];
                 mazePanel.setLayout(new GridLayout(row, coloumn));
                 generateRandomMaze();
-                colorMaze(row, coloumn, 'O', 'B', 'M', 'E');
+                colorMaze(row, coloumn, 'B', 'O', 'M', 'E');
                 randomMazeEnter.setVisible(false);
                 emptyPanel.setVisible(false);
                 mazePanel.setVisible(true);
                 bottomRandomPanel.setVisible(true);
             }
         }
+        
+        if (command.equals("Proceed")) {
+
+
+
+        }
 
         if(command.equals("Re_Enter Button")){
 
+            
             randomMazeEnter.setVisible(true);
             emptyPanel.setVisible(true);
             mazePanel.setVisible(false);
             bottomRandomPanel.setVisible(false);
+            mazePanel.removeAll();
+
     }
 }
 
