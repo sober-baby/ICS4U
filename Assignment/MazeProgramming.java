@@ -25,10 +25,12 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static JPanel randomMazeEnter = new JPanel();
     public static JPanel randomMazeSolve = new JPanel();
     public static JPanel emptyPanel = new JPanel();
+    public static JPanel bottomFilePanel = new JPanel();
+    public static JPanel bottomRandomPanel = new JPanel();
     public static JLabel[][] mapLable = new JLabel[row][coloumn];
     public static JLabel descriptionLabel1, descriptionLabel2, chooseRowLabel, chooseColoumnJLabel, emptyLabel,
             noteLabel;
-    public static JButton chooseFile, chooseRandom, submitDimention, findPath;
+    public static JButton chooseFile, chooseRandom, submitDimention, findPath, homeButton, reenterButton;
     public static JTextField enterRow, enterColoumn, enterFileName;
     String getText;
 
@@ -104,7 +106,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
 
         boolean isUnique = true;
 
-      /*  do {
+        do {
 
             isUnique = true;
             int rMouse = rand.nextInt(pathChar.length);
@@ -129,17 +131,18 @@ public class MazeProgramming extends JFrame implements ActionListener {
                 pathChar[rMouse][cMouse] = 'M';
                 pathChar[rExit][cExit] = 'E';
             }
-        } while (!isUnique);*/
+        } while (!isUnique);
     }
 
     public static void enterValidNumber() throws NumberFormatException {
 
         boolean isValid = false;
+
         try {
             int tempr = Integer.parseInt(enterRow.getText());
-            int tempc = Integer.parseInt(enterRow.getText());
+            int tempc = Integer.parseInt(enterColoumn.getText());
 
-            if (tempr > 20 || tempc > 20) {
+            if (tempr > 20 || tempc > 20 || tempr < 2 || tempc < 2) {
 
                 throw new NumberFormatException();
 
@@ -147,7 +150,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
 
                 throw new NumberFormatException();
 
-            } else if (tempr < 3 && tempc < 2) {
+            } else if (tempr < 3 || tempc < 2) {
 
                 throw new NumberFormatException();
 
@@ -221,6 +224,14 @@ public class MazeProgramming extends JFrame implements ActionListener {
         randomMazeEnter.add(submitDimention);
         randomMazeEnter.add(noteLabel);
         randomMazeEnter.setLayout(randomPanelLayout);
+        reenterButton = new JButton("Re_Enter Button");
+        reenterButton.addActionListener(this);
+        homeButton = new JButton("Home Button");
+        homeButton.addActionListener(this);
+        bottomRandomPanel.add(homeButton);
+        bottomRandomPanel.add(reenterButton);
+        bottomRandomPanel.setLayout(new GridLayout(1,2));
+        bottomRandomPanel.setMaximumSize(new Dimension(2000,2000));;
 
         /*
          * If the user chooses to load data from a file
@@ -241,6 +252,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
         mazePanel.setVisible(false);
         randomMazeSolve.setVisible(false);
         emptyPanel.setVisible(false);
+        bottomRandomPanel.setVisible(false);
         setVisible(true);
         setLayout(layout2);
         add(choosePanel);
@@ -249,6 +261,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
         add(mazePanel);
         add(randomMazeSolve);
         add(emptyPanel);
+        add(bottomRandomPanel);
 
     }
 
@@ -276,9 +289,18 @@ public class MazeProgramming extends JFrame implements ActionListener {
                 randomMazeEnter.setVisible(false);
                 emptyPanel.setVisible(false);
                 mazePanel.setVisible(true);
+                bottomRandomPanel.setVisible(true);
             }
         }
+
+        if(command.equals("Re_Enter Button")){
+
+            randomMazeEnter.setVisible(true);
+            emptyPanel.setVisible(true);
+            mazePanel.setVisible(false);
+            bottomRandomPanel.setVisible(false);
     }
+}
 
     public static void main(String args[]) {
 
