@@ -87,7 +87,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
 
         for (int r = 0; r < pathChar.length; r++) {
 
-            for (int c = 0; c < pathChar[0].length; c++) {
+            for (int c = 0; c < pathChar[r].length; c++) {
 
                 int num = rand.nextInt(3) + 1;
 
@@ -104,7 +104,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
 
         boolean isUnique = true;
 
-        do {
+      /*  do {
 
             isUnique = true;
             int rMouse = rand.nextInt(pathChar.length);
@@ -129,7 +129,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
                 pathChar[rMouse][cMouse] = 'M';
                 pathChar[rExit][cExit] = 'E';
             }
-        } while (!isUnique);
+        } while (!isUnique);*/
     }
 
     public static void enterValidNumber() throws NumberFormatException {
@@ -139,11 +139,20 @@ public class MazeProgramming extends JFrame implements ActionListener {
             int tempr = Integer.parseInt(enterRow.getText());
             int tempc = Integer.parseInt(enterRow.getText());
 
-            if (tempr > 20 || tempc > 20 || (tempr < 2 && tempc < 3) || (tempr < 3 && tempc < 2)) {
+            if (tempr > 20 || tempc > 20) {
+
+                throw new NumberFormatException();
+
+            } else if (tempr < 2 && tempc < 3) {
+
+                throw new NumberFormatException();
+
+            } else if (tempr < 3 && tempc < 2) {
 
                 throw new NumberFormatException();
 
             } else {
+
                 isValid = true;
 
             }
