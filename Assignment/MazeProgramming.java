@@ -13,8 +13,9 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static Font fontbig = new Font("SansSerif", Font.BOLD, 30);
     public static Font fontmedium = new Font("SansSerif", Font.BOLD, 20);
     public static Font fontsmall = new Font("SansSerif", Font.BOLD, 15);
-    public static char b, o, m, exit;
-    public static int row, coloumn;
+    public static File file;
+    public static char b, open, m, exit;
+    public static int row, coloumn, startr, startc;
     public static boolean validInput = false;
     public static Color brown = new Color(218, 165, 32);
     public static char[][] pathChar = new char[row][coloumn];
@@ -31,100 +32,130 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static JLabel[][] mapLable = new JLabel[row][coloumn];
     public static JLabel descriptionLabel1, descriptionLabel2, chooseRowLabel, chooseColoumnJLabel, emptyLabel,
             noteLabel;
-    public static JButton chooseFile, proceed, chooseRandom, submitDimention, findPath, homeButton, reenterButton;
+    public static JButton chooseFile, proceed, chooseRandom, submitDimention, findPath, homeButton, findPath1,
+            homeButton1, reenterDimentonButton, reenterFileButton;
     public static JTextField enterRow, enterColoumn, enterFileName;
     String getText;
 
-    // pop up window that tell user to enter the correct dimention
+    // pop up window that tell user to enter the correct dimention or correct file name
     public static void infoBox(String infoMessage, String titleBar) {
-
         JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // recursive method that finds the path of the maze and displays it
+
+    public static void findPathSetup(){
+
+        for(int r = 0; r<row; r++){
+                for(int c = 0; c<coloumn; c++){
+                    if(pathChar[r][c] == 'M'){
+                        startr = r;
+                        startc = c;
+                    }
+                    if(pathChar[r][c] == open){
+                        openVisited[r][c] = false; 
+                        canExit[r][c] = false;
+                    }
+                }
+            }
+        }
+    
+    public static boolean findPath(char border, char open, char mouse, char exit) {
+
+        if(row < 0 || coloumn < 0 || row >= pathChar.length || coloumn >= pathChar[0].length){
+            return false;
+        }
+        if (pathChar[row][coloumn] == exit) {
+            return false;
+        }
+        if (pathChar[row][coloumn] == border) {
+            return false;
+        }
+        
+        
+
+
+
+        return true;
+
 
     }
 
-    // method for prompting user for the file name, reading information from the file, and declaring labels accordingly
 
-    public static void getMapFromFile() throws IOException {
-		Scanner ss = new Scanner(System.in); 
-		System.out.println("Enter the file name: xxx.txt ");
-		String fileName = ss.nextLine(); // take in the file name
-		File file = new File(fileName);
-		Scanner fs = new Scanner(file); // declare a second scanner for scanning through the file
-		int row = fs.nextInt(); // record the number of rows 
-		int column = fs.nextInt(); // record the number of columns
+
+
+
+
+
+    public static void getMapFromFile(String fileName) throws IOException {
+
+        Scanner fs = new Scanner(file); // declare a scanner for scanning through the file
+        row = fs.nextInt(); // record the number of rows
+        coloumn = fs.nextInt(); // record the number of columns
         b = fs.next().charAt(0); // record the border character
-        o = fs.next().charAt(0); // record the border character
+        open = fs.next().charAt(0); // record the border character
         m = fs.next().charAt(0); // record the border character
         exit = fs.next().charAt(0); // record the border character
+        pathChar = new char[row][coloumn];
+        mapLable = new JLabel[row][coloumn];
+        openVisited = new boolean[row][coloumn];
+        canExit = new boolean[row][coloumn];
+        fs.close();
+        fs = new Scanner(file);
+        for (int i = 0; i < 6; i++) {
+            fs.nextLine();
+        }
+        String line = ""; // declare a string to store the line of the file
+        for (int r = 0; r < row; r++) { // go through all labels and assign them a color
+            line = fs.nextLine();
+            for (int c = 0; c < coloumn; c++) {
+                pathChar[r][c] = line.charAt(c); // record the character in the file
+            }
+        }
         fs.close(); // close the file scanner
-		for (int r = 0; r < row; r++) { // go through all labels and assign them a color
-            String line = fs.nextLine();
-			for (int c = 0; c < column; c++) {
-				pathChar[r][c] = line.charAt(c); // record the character in the file
-			}
-		}
-	}
-
+    }
 
     // function to color the specified maze
     public static void colorMaze(int row, int coloumn, char block, char open, char mouse, char exit) {
 
         for (int r = 0; r < mapLable.length; r++) {
-
             for (int c = 0; c < mapLable[0].length; c++) {
-
-                if (pathChar[r][c] == open) {
-
+                if (pathChar[r][c] == block) {
+                    mapLable[r][c] = new JLabel(String.valueOf(block));
+                    mapLable[r][c].setOpaque(true);
+                    mapLable[r][c].setBackground(brown);
+                } else if (pathChar[r][c] == open) {
                     mapLable[r][c] = new JLabel(String.valueOf(open));
                     mapLable[r][c].setOpaque(true);
                     mapLable[r][c].setBackground(Color.yellow);
-
-                } else if (pathChar[r][c] == block) {
-
-                    mapLable[r][c] = new JLabel(String.valueOf(open));
-                    mapLable[r][c].setOpaque(true);
-                    mapLable[r][c].setBackground(brown);
-
                 } else if (pathChar[r][c] == mouse) {
-
                     mapLable[r][c] = new JLabel(String.valueOf(mouse));
                     mapLable[r][c].setOpaque(true);
                     mapLable[r][c].setBackground(Color.gray);
-
                 } else if (pathChar[r][c] == exit) {
-
                     mapLable[r][c] = new JLabel(String.valueOf(exit));
                     mapLable[r][c].setOpaque(true);
                     mapLable[r][c].setBackground(Color.green);
-
                 }
-
                 mapLable[r][c].setHorizontalAlignment(SwingConstants.CENTER);
                 mapLable[r][c].setFont(fontsmall);
                 mazePanel.add(mapLable[r][c]);
-
             }
         }
-
     }
 
     public static void generateRandomMaze() {
 
         Random rand = new Random();
-
         for (int r = 0; r < pathChar.length; r++) {
-
             for (int c = 0; c < pathChar[r].length; c++) {
-
                 int num = rand.nextInt(3) + 1;
-
                 if (r == 0 || c == 0 || r == pathChar.length - 1 || c == pathChar[0].length - 1) {
                     pathChar[r][c] = 'B';
                 } else if (num < 2) {
                     pathChar[r][c] = 'B';
                 } else {
                     pathChar[r][c] = 'O';
-
                 }
             }
         }
@@ -132,13 +163,11 @@ public class MazeProgramming extends JFrame implements ActionListener {
         boolean isUnique = true;
 
         do {
-
             isUnique = true;
             int rMouse = rand.nextInt(pathChar.length);
             int cMouse = rand.nextInt(pathChar[0].length);
             int rExit = rand.nextInt(pathChar.length);
             int cExit = rand.nextInt(pathChar[0].length);
-
             if (rMouse == rExit && cMouse == cExit) {
                 isUnique = false;
             } else if (rExit > 0 && rExit < pathChar.length - 1 && cExit > 0 && cExit < pathChar[0].length - 1) {
@@ -162,39 +191,25 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static void enterValidNumber() throws NumberFormatException {
 
         boolean isValid = false;
-
         try {
             int tempr = Integer.parseInt(enterRow.getText());
             int tempc = Integer.parseInt(enterColoumn.getText());
-
             if (tempr > 20 || tempc > 20 || tempr < 2 || tempc < 2) {
-
                 throw new NumberFormatException();
-
             } else if (tempr < 2 && tempc < 3) {
-
                 throw new NumberFormatException();
-
-            } else if (tempr < 3 || tempc < 2) {
-
+            } else if (tempr < 3 && tempc < 2) {
                 throw new NumberFormatException();
-
             } else {
-
                 isValid = true;
-
             }
-
             if (isValid) {
-
                 row = tempr;
                 coloumn = tempc;
                 validInput = true;
-
             }
         } catch (NumberFormatException e) {
             MazeProgramming.infoBox("Enter a valid dimention", "ERROR");
-
         }
     }
 
@@ -203,13 +218,11 @@ public class MazeProgramming extends JFrame implements ActionListener {
         setTitle("Maze Asignment");
         setSize(1920, 1080);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        GridLayout layout1 = new GridLayout(row + 1, coloumn);
-        BoxLayout layout2 = new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS);
-        FlowLayout layout3 = new FlowLayout();
+        BoxLayout boxLayout = new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS);
         GridLayout choosePanelLayout = new GridLayout(2, 2);
         descriptionLabel1 = new JLabel("Welcome to the maze path finder program");
         descriptionLabel2 = new JLabel("Press a button of you choice to continue");
-        chooseFile = new JButton("Press to Enter From File");
+        chooseFile = new JButton("Press to enter a file");
         chooseFile.addActionListener(this);
         chooseFile.setFont(fontbig);
         chooseRandom = new JButton("Press to auto generate a maze");
@@ -230,7 +243,6 @@ public class MazeProgramming extends JFrame implements ActionListener {
         choosePanel.add(chooseRandom);
 
         // If the user want to enter the dimentions manually
-
         GridLayout randomPanelLayout = new GridLayout(2, 2);
         enterRow = new JTextField("Enter how many rows HERE ");
         enterRow.setHorizontalAlignment(SwingConstants.CENTER);
@@ -249,40 +261,51 @@ public class MazeProgramming extends JFrame implements ActionListener {
         randomMazeEnter.add(submitDimention);
         randomMazeEnter.add(noteLabel);
         randomMazeEnter.setLayout(randomPanelLayout);
-        reenterButton = new JButton("Re_Enter Button");
-        reenterButton.addActionListener(this);
+        reenterDimentonButton = new JButton("Re_Enter Dimention");
+        reenterDimentonButton.addActionListener(this);
         homeButton = new JButton("Home Button");
         homeButton.addActionListener(this);
-        bottomRandomPanel.add(homeButton);
-        bottomRandomPanel.add(reenterButton);
-        bottomRandomPanel.setLayout(new GridLayout(1,2));
-        bottomRandomPanel.setMaximumSize(new Dimension(20000,20000));
-
-        //If the user chooses to load data from a file
-          
-        enterFileName = new JTextField("Enter a file name", 20); 
-        enterFileName.setFont(fontmedium);
-        proceed = new JButton("Re_Enter Button");
-        proceed.addActionListener(this);
-        proceed.setFont(fontmedium);
-        fileMazePanel.add(enterFileName);
-        fileMazePanel.add(proceed);
-        fileMazePanel.setLayout(new GridLayout(1,2));
-        fileMazePanel.setMaximumSize(new Dimension(20000,20000));
-        
-
-        // generate tiles as lables for the maze
-
         findPath = new JButton("Find Path");
         findPath.addActionListener(this);
+        bottomRandomPanel.add(findPath);
+        bottomRandomPanel.add(homeButton);
+        bottomRandomPanel.add(reenterDimentonButton);
+        bottomRandomPanel.setLayout(new GridLayout(1, 3));
+        bottomRandomPanel.setMaximumSize(new Dimension(20000, 20000));
+
+        // If the user chooses to load data from a file
+        enterFileName = new JTextField("Enter a file name", 20);
+        enterFileName.setFont(fontmedium);
+        enterFileName.setHorizontalAlignment(SwingConstants.CENTER);
+        proceed = new JButton("Proceed");
+        proceed.addActionListener(this);
+        proceed.setFont(fontmedium);
+        reenterFileButton = new JButton("Re_Enter File");
+        reenterFileButton.addActionListener(this);
+        homeButton1 = new JButton("Home Button");
+        homeButton1.addActionListener(this);
+        findPath1 = new JButton("Find Path");
+        findPath.addActionListener(this);
+        bottomFilePanel.add(findPath1);
+        bottomFilePanel.add(homeButton1);
+        bottomFilePanel.add(reenterFileButton);
+        bottomFilePanel.setLayout(new GridLayout(1, 3));
+        bottomFilePanel.setMaximumSize(new Dimension(20000, 20000));
+        fileMazePanel.add(enterFileName);
+        fileMazePanel.add(proceed);
+        fileMazePanel.setLayout(new GridLayout(1, 2));
+        fileMazePanel.setMaximumSize(new Dimension(20000, 20000));
+
+        // generate tiles as lables for the maze
         fileMazePanel.setVisible(false);
         randomMazeEnter.setVisible(false);
         mazePanel.setVisible(false);
         randomMazeSolve.setVisible(false);
         emptyPanel.setVisible(false);
         bottomRandomPanel.setVisible(false);
+        bottomFilePanel.setVisible(false);
         setVisible(true);
-        setLayout(layout2);
+        setLayout(boxLayout);
         add(choosePanel);
         add(fileMazePanel);
         add(randomMazeEnter);
@@ -290,6 +313,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
         add(randomMazeSolve);
         add(emptyPanel);
         add(bottomRandomPanel);
+        add(bottomFilePanel);
 
     }
 
@@ -297,30 +321,23 @@ public class MazeProgramming extends JFrame implements ActionListener {
 
         String command = e.getActionCommand();
         if (command.equals("Press to auto generate a maze")) {
-
             choosePanel.setVisible(false);
             randomMazeEnter.setVisible(true);
             emptyPanel.setVisible(true);
-
         }
-
-        if(command.equals("Press to Enter From file")){
-
-
-            fileMazePanel.setVisible(true);
+        if (command.equals("Press to enter a file")) {
             choosePanel.setVisible(false);
+            fileMazePanel.setVisible(true);
             emptyPanel.setVisible(true);
-
         }
-
         if (command.equals("Enter")) {
-
+            validInput = false;
             enterValidNumber();
-
             if (validInput == true) {
-               
                 mapLable = new JLabel[row][coloumn];
                 pathChar = new char[row][coloumn];
+                openVisited = new boolean[row][coloumn];
+                canExit = new boolean[row][coloumn];
                 mazePanel.setLayout(new GridLayout(row, coloumn));
                 generateRandomMaze();
                 colorMaze(row, coloumn, 'B', 'O', 'M', 'E');
@@ -330,46 +347,50 @@ public class MazeProgramming extends JFrame implements ActionListener {
                 bottomRandomPanel.setVisible(true);
             }
         }
-        
         if (command.equals("Proceed")) {
-
-
-            
             String fileName = enterFileName.getText();
-            File file = new File(fileName);
-            
-            if(file.isFile()){
-
+            file = new File(fileName);
+            if (file.isFile()) {
                 try {
-                    getMapFromFile();
-                    colorMaze(row, coloumn, b, o, m, exit);
+                    fileMazePanel.setVisible(false);
+                    emptyPanel.setVisible(false);
+                    mazePanel.setVisible(true);
+                    bottomFilePanel.setVisible(true);
+                    getMapFromFile(fileName);
+                    mazePanel.setLayout(new GridLayout(row, coloumn));
+                    colorMaze(row, coloumn, b, open, m, exit);
                 } catch (IOException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                
-
-
-            }else{
-                    
-                    MazeProgramming.infoBox("Enter a valid file name", "ERROR");
-    
+            } else {
+                MazeProgramming.infoBox("Enter a valid file name", "ERROR");
             }
-
         }
-
-        if(command.equals("Re_Enter Button")){
-
-            
+        if (command.equals("Re_Enter Dimention")) {
             randomMazeEnter.setVisible(true);
             emptyPanel.setVisible(true);
             mazePanel.setVisible(false);
             bottomRandomPanel.setVisible(false);
             mazePanel.removeAll();
-
+        }
+        if (command.equals("Re_Enter File")) {
+            fileMazePanel.setVisible(true);
+            emptyPanel.setVisible(true);
+            mazePanel.setVisible(false);
+            bottomFilePanel.setVisible(false);
+            mazePanel.removeAll();
+        }
+        if (command.equals("Home Button")) {
+            choosePanel.setVisible(true);
+            mazePanel.setVisible(false);
+            bottomFilePanel.setVisible(false);
+            bottomRandomPanel.setVisible(false);
+            mazePanel.removeAll();
+        }
+        if(command.equals("Find Path")){
+    
     }
 }
-
     public static void main(String args[]) {
 
         MazeProgramming frame = new MazeProgramming();
