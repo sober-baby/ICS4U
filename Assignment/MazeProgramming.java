@@ -5,22 +5,25 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import javax.xml.stream.events.EndElement;
 import GUI.FlowLayoutDemo;
 
 public class MazeProgramming extends JFrame implements ActionListener {
 
+    public static Stack<pair> stack = new Stack<pair>();
     public static Font fontbig = new Font("SansSerif", Font.BOLD, 30);
     public static Font fontmedium = new Font("SansSerif", Font.BOLD, 20);
     public static Font fontsmall = new Font("SansSerif", Font.BOLD, 15);
     public static File file;
-    public static char b, open, m, exit;
-    public static int row, coloumn, startr, startc;
+    public static char b, open, mouse, exit;
+    public static int row, coloumn, startr, startc, exitr, exitc;
+    public static int[] rx = { 0, 0, 1, -1 };
+    public static int[] ry = { 1, -1, 0, 0 };
     public static boolean validInput = false;
     public static Color brown = new Color(218, 165, 32);
     public static char[][] pathChar = new char[row][coloumn];
-    public static boolean[][] openVisited = new boolean[row][coloumn];
-    public static boolean[][] canExit = new boolean[row][coloumn];
+    public static boolean[][] isVisited = new boolean[row][coloumn];
     public static JPanel choosePanel = new JPanel();
     public static JPanel fileMazePanel = new JPanel();
     public static JPanel mazePanel = new JPanel();
@@ -37,55 +40,62 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static JTextField enterRow, enterColoumn, enterFileName;
     String getText;
 
-    // pop up window that tell user to enter the correct dimention or correct file name
+    // pop up window that tell user to enter the correct dimention or correct file
+    // name
     public static void infoBox(String infoMessage, String titleBar) {
         JOptionPane.showMessageDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
 
     // recursive method that finds the path of the maze and displays it
 
-    public static void findPathSetup(){
+    public static void findPathSetup() {
 
-        for(int r = 0; r<row; r++){
-                for(int c = 0; c<coloumn; c++){
-                    if(pathChar[r][c] == 'M'){
-                        startr = r;
-                        startc = c;
-                    }
-                    if(pathChar[r][c] == open){
-                        openVisited[r][c] = false; 
-                        canExit[r][c] = false;
-                    }
+        isVisited = new boolean[row][coloumn];
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < coloumn; c++) {
+                if (pathChar[r][c] == 'M') {
+                    startr = r;
+                    startc = c;
+                }
+                if (pathChar[r][c] == 'E') {
+                    exitr = r;
+                    exitc = c;
                 }
             }
         }
-    
-    public static boolean findPath(char border, char open, char mouse, char exit) {
-
-        if(row < 0 || coloumn < 0 || row >= pathChar.length || coloumn >= pathChar[0].length){
-            return false;
-        }
-        if (pathChar[row][coloumn] == exit) {
-            return false;
-        }
-        if (pathChar[row][coloumn] == border) {
-            return false;
-        }
-        
-        
-
-
-
-        return true;
-
-
     }
 
+    public static void findPath(int x, int y) {
+        if (x == exitr && y == exitc) {
+            System.out.println(stack.peek().first + " " + stack.peek().second);
+            Stack<pair> temp = (Stack<pair>)stack.clone();
+            while (!temp.isEmpty()) {
+                int pathx = temp.peek().first;
+                int pathy = temp.peek().second;
+                pathChar[pathx][pathy] = '+';
+                temp.pop();
+            }
+           
+                stack.pop();
+            
+            isVisited[x][y] = false;
+            return;
+        }
 
-
-
-
-
+        for (int i = 0; i < 4; i++) {
+            int dx = x + rx[i];
+            int dy = y + ry[i];
+            if (dx >= 0 && dx <= row-1 && dy >= 0 && dy <= coloumn-1
+                    && pathChar[dx][dy] != 'B' && !isVisited[dx][dy]) {
+                isVisited[dx][dy] = true;
+                stack.push(new pair(dx, dy));
+                findPath(dx, dy);
+            }
+        }
+        stack.pop();
+        isVisited[x][y] = false;
+        return;
+    }
 
     public static void getMapFromFile(String fileName) throws IOException {
 
@@ -94,12 +104,10 @@ public class MazeProgramming extends JFrame implements ActionListener {
         coloumn = fs.nextInt(); // record the number of columns
         b = fs.next().charAt(0); // record the border character
         open = fs.next().charAt(0); // record the border character
-        m = fs.next().charAt(0); // record the border character
+        mouse = fs.next().charAt(0); // record the border character
         exit = fs.next().charAt(0); // record the border character
         pathChar = new char[row][coloumn];
         mapLable = new JLabel[row][coloumn];
-        openVisited = new boolean[row][coloumn];
-        canExit = new boolean[row][coloumn];
         fs.close();
         fs = new Scanner(file);
         for (int i = 0; i < 6; i++) {
@@ -116,7 +124,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
     }
 
     // function to color the specified maze
-    public static void colorMaze(int row, int coloumn, char block, char open, char mouse, char exit) {
+    public static void colorMaze(int row, int coloumn, char block, char open, char mouse, char exit, char correctPath) {
 
         for (int r = 0; r < mapLable.length; r++) {
             for (int c = 0; c < mapLable[0].length; c++) {
@@ -136,6 +144,10 @@ public class MazeProgramming extends JFrame implements ActionListener {
                     mapLable[r][c] = new JLabel(String.valueOf(exit));
                     mapLable[r][c].setOpaque(true);
                     mapLable[r][c].setBackground(Color.green);
+                } else if (pathChar[r][c] == correctPath) {
+                    mapLable[r][c] = new JLabel(String.valueOf(correctPath));
+                    mapLable[r][c].setOpaque(true);
+                    mapLable[r][c].setBackground(Color.blue);
                 }
                 mapLable[r][c].setHorizontalAlignment(SwingConstants.CENTER);
                 mapLable[r][c].setFont(fontsmall);
@@ -336,11 +348,9 @@ public class MazeProgramming extends JFrame implements ActionListener {
             if (validInput == true) {
                 mapLable = new JLabel[row][coloumn];
                 pathChar = new char[row][coloumn];
-                openVisited = new boolean[row][coloumn];
-                canExit = new boolean[row][coloumn];
                 mazePanel.setLayout(new GridLayout(row, coloumn));
                 generateRandomMaze();
-                colorMaze(row, coloumn, 'B', 'O', 'M', 'E');
+                colorMaze(row, coloumn, 'B', 'O', 'M', 'E','A');
                 randomMazeEnter.setVisible(false);
                 emptyPanel.setVisible(false);
                 mazePanel.setVisible(true);
@@ -358,7 +368,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
                     bottomFilePanel.setVisible(true);
                     getMapFromFile(fileName);
                     mazePanel.setLayout(new GridLayout(row, coloumn));
-                    colorMaze(row, coloumn, b, open, m, exit);
+                    colorMaze(row, coloumn, b, open, mouse, exit, 'A');
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -387,13 +397,28 @@ public class MazeProgramming extends JFrame implements ActionListener {
             bottomRandomPanel.setVisible(false);
             mazePanel.removeAll();
         }
-        if(command.equals("Find Path")){
-    
+        if (command.equals("Find Path")) {
+
+            mazePanel.removeAll();
+            findPathSetup();
+            stack.push(new pair(startr, startc));
+            findPath(startr, startc);
+            // for (int i = 0; i < row; i++) {
+            //     for (int j = 0; j < coloumn; j++) {
+            //         System.out.print(pathChar[i][j] + " ");
+            //     }
+            //     System.out.println();
+            // }
+            colorMaze(row, coloumn, b, open, mouse, exit, '+');
+
+        }
     }
-}
+
     public static void main(String args[]) {
 
         MazeProgramming frame = new MazeProgramming();
+        pair cordpair = new pair(startr, startc);
+        
 
     }
 }
