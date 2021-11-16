@@ -373,7 +373,24 @@ public class MazeProgramming extends JFrame implements ActionListener {
         if (command.equals("Proceed")) { // if the user choose to proceed/submit with the file name
             String fileName = enterFileName.getText(); // get the file name from the text field
             file = new File(fileName); // "create" a new file called 'file' with the file name
-            if (file.isFile()) { // if the file exists
+            
+            if(file.isFile()){ // if the file is a file
+                try {
+                    Scanner fc = new Scanner(file); // create a scanner called to read the file
+                    fc.nextInt(); // skip the first and second line of the file
+                    fc.nextInt();
+                    border = fc.next().charAt(0); // get the border from the file
+                    open = fc.next().charAt(0); // get the open from the file
+                    mouse = fc.next().charAt(0); // get the mouse/starting point from the file
+                    exit = fc.next().charAt(0); // get the exit from the file
+                    fc.close(); // close the file scanner 
+                } catch (FileNotFoundException e2) { 
+                    // TODO Auto-generated catch block
+                    e2.printStackTrace();
+                }
+            }
+            
+            if (file.isFile() && (border != '+' && open != '+' && mouse != '+' && exit != '+')) { // if the file exists and the file's legend is not the correct path indicator 
                 try { 
                     fileMazePanel.setVisible(false); // make the file maze panel invisible
                     emptyPanel.setVisible(false); // make the empty panel invisible
@@ -386,7 +403,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
                     e1.printStackTrace(); // print the error on console
                 }
             } else { // if the file does not exist
-                MazeProgramming.infoBox("Enter a valid file name", "ERROR"); // show an error message that tells user to enter a correct file name
+                MazeProgramming.infoBox("Enter a valid file name or one with correct legend", "ERROR"); // show an error message that tells user to enter a correct file name
             }
         }
         if (command.equals("Re_Enter Dimention")) { // if the user choose to re-enter the dimentions of the maze
