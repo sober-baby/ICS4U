@@ -200,7 +200,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
         try { // try to catch the exception
             int tempr = Integer.parseInt(enterRow.getText()); // get the row from the text field and convert it to an integer
             int tempc = Integer.parseInt(enterColoumn.getText()); // get the coloumn from the text field and convert it to an integer
-            if (tempr > 20 || tempc > 20 || tempr < 2 || tempc < 2) { // if the row or coloumn is less than 2 or greater than 20
+            if (tempr > 1000 || tempc > 1000 || tempr < 2 || tempc < 2) { // if the row or coloumn is less than 2 or greater than 20
                 throw new NumberFormatException(); // throw the exception
             } else if (tempr == 2 && tempc == 2){ // if the row is 2 and the coloumn is 2
                 throw new NumberFormatException(); // throw the exception
