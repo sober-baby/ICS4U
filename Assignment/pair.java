@@ -1,7 +1,7 @@
 /*
 * Name: James Tan
-* Date: 11/11/2021
-* Description: Pair class that pairs two values together in a pair
+* Date: 11/22/2021
+* Description: Pair class that pairs two values together
 */
 package Assignment;
 public class Pair {

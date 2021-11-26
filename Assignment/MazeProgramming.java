@@ -1,6 +1,6 @@
 /*
 * Name: James Tan
-* Date: 11/11/2021
+* Date: 11/22/2021
 * Description: A program that auto creates or reads a maze from a file and finds all the paths from the start to the exit of the maze using recursion. 
 */
 
@@ -202,11 +202,10 @@ public class MazeProgramming extends JFrame implements ActionListener {
             int tempc = Integer.parseInt(enterColoumn.getText()); // get the coloumn from the text field and convert it to an integer
             if (tempr > 20 || tempc > 20 || tempr < 2 || tempc < 2) { // if the row or coloumn is less than 2 or greater than 20
                 throw new NumberFormatException(); // throw the exception
-            } else if (tempr < 2 && tempc < 3) { // if the row is less than 2 and the coloumn is less than 3
+            } else if (tempr == 2 && tempc == 2){ // if the row is 2 and the coloumn is 2
                 throw new NumberFormatException(); // throw the exception
-            } else if (tempr < 3 && tempc < 2) { // if the row is less than 3 and the coloumn is less than 2
-                throw new NumberFormatException(); // throw the exception
-            } else {
+            }
+            else {
                 isValid = true; // set the boolean variable to true if the above conditions are not met
             }
             if (isValid) { // if the boolean variable is true
@@ -466,7 +465,8 @@ public class MazeProgramming extends JFrame implements ActionListener {
                 }
             }
             colorMaze(); // color the maze
-            // built in method to refresh the Jframe so that it can display the correct paths if there is any 
+
+            // built in method to refresh the Jframe so that it can display the correct paths with correct color if there is any 
             invalidate();  
             validate(); 
             repaint();
@@ -474,7 +474,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
         if (command.equals("Home Button") || command.equals("Re_Enter Dimention") || command.equals("Re_Enter File")) {  // if the user choose to go back to the home/choose panel page, or to re-enter a file or dimentions
             mazeResultLable1.setText("Maze Result Will be Shown HERE"); // set the text of the maze result label to "Maze Result Will be Shown HERE"
             mazeResultLable2.setText("Maze Result Will be Shown HERE");
-            mazeResultLable1.setBackground(Color.gray); // set the background of the maze result label to gray
+            mazeResultLable1.setBackground(Color.gray); // set the background of the maze result label to the original color - gray
             mazeResultLable2.setBackground(Color.gray);
         }
     } // end of actionPerformed method
