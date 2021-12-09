@@ -34,10 +34,18 @@ public class QuickSort {
                 array[j] = temp;
             }
         }
+<<<<<<< HEAD
         int temp = array[i+1]; //swap elements 
         array[i+1] = array[high]; 
         array[high] = temp; 
         return i+1; //return index of pivot
+=======
+       
+        int temp = array[i+1];
+        array[i+1] = array[high];
+        array[high] = temp;
+        return i+1;
+>>>>>>> 652aa51f39cc21b5ec2d33c77a7b62f18ebcb193
     }
 }
 
