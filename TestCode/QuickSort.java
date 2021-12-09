@@ -37,7 +37,7 @@ public class QuickSort {
         int temp = array[i+1];
         array[i+1] = array[high];
         array[high] = temp;
-        return i+1+1;
+        return i+1;
     }
 }
 
