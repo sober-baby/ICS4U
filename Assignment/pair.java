@@ -3,7 +3,7 @@
 * Date: 11/22/2021
 * Description: Pair class that pairs two values together
 */
-package Assignment;
+
 public class Pair {
     int fir, sec; //declare variables
     Pair(int a, int b) { //constructor

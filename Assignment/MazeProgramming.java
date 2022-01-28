@@ -4,7 +4,7 @@
 * Description: A program that auto creates or reads a maze from a file and finds all the paths from the start to the exit of the maze using recursion. 
 */
 
-package Assignment;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -41,7 +41,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
     public static JButton chooseFile, chooseRandom, submitDimention, proceed; //buttons to choose to read from a file or create a random maze, and to proceed to the next step if the user has entered the correct file name or dimention
     public static JButton reenterDimentonButton, reenterFileButton;  //buttons to re-enter the dimention or file name
     public static JButton findPath, homeButton, findPath1, homeButton1; //buttons to find the path or go back to the home screen
-    public static JTextField enterRow, enterColoumn, enterFileName; //text fields to let user enter the number of rows and columns for the random maze, or enter the file name
+    public static JTextField enterRow, enterColoumn, enterFileName; //text fields to enter the number of rows and columns for the random maze, and to enter the file name
 
     //method for a pop up window that tell user to enter the correct dimention or correct file
     public static void infoBox(String infoMessage, String titleBar) {
@@ -85,7 +85,7 @@ public class MazeProgramming extends JFrame implements ActionListener {
 
         Scanner fs = new Scanner(file); // declare a scanner for scanning through the file
         row = fs.nextInt(); // record the number of rows
-        coloumn = fs.nextInt(); // record the number of columns
+        coloumn = fs.nextInt(); // record the number of coloumns
         border = fs.next().charAt(0); // record the border character
         open = fs.next().charAt(0); // record the open character
         mouse = fs.next().charAt(0); // record the mouse character
