@@ -1,5 +1,3 @@
-package Assignment;
-
 import java.awt.*;
 import javax.swing.*;
 
